@@ -42,12 +42,13 @@
     </button>
   </form>
   <Toast v-if="showToast" :message="toastMessage" :type="toastAlertType"/>
+  <div id="test"></div>
 </template>
 
 <script>
 import { useRoute, useRouter } from "vue-router";
 import axios from 'axios';
-import { ref, computed } from 'vue';
+import { ref, computed, onBeforeMount, onMounted, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted } from 'vue';
 import _ from 'lodash';
 import Toast from "../../components/Toast";
 
@@ -55,7 +56,30 @@ export default {
   components : {
     Toast
   },
+
   setup() {
+    onBeforeMount(() => {
+      console.log(document.querySelector(('#test')))
+    });
+    onMounted(() => {
+      console.log(document.querySelector(('#test')))
+
+    });
+    onBeforeUpdate(() => {
+      console.log('before update')
+    })
+    onUpdated(() => {
+      console.log('update!')
+    })
+    onBeforeUnmount(() => {
+      console.log('before unmount')
+    })
+    onUnmounted(() => {
+      // unmount하기 전에 쓸데없는 메모리를 잡아먹는 것을 정리하는 역할
+      console.log('unmounted')
+
+    })
+    console.log('test!!')
     const router = useRouter()
     const route = useRoute()
     const todo = ref(null);
