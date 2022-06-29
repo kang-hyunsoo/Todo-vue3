@@ -1,6 +1,10 @@
 <template>
-  <router-view/>
+<!--  <router-view/>-->
+<div>
+  <div  class="d-flex justify-content-between mb-3">
     <h2 class="pt-5">To-Do List</h2>
+    <button class="btn btn-primary" @click="moveToCreatePage">Create Todo</button>
+  </div>
     <input
         class="form-control"
         type="text"
@@ -9,7 +13,7 @@
         @keyup.enter="searchTodo"
     >
     <hr />
-    <TodoSimpleForm @add-todo="addTodo" />
+<!--    <TodoSimpleForm @add-todo="addTodo" />-->
     <div style="color: red">{{ error }}</div>
 
     <div v-if="!todos.length">
@@ -41,26 +45,54 @@
         </li>
       </ul>
     </nav>
+  <Toast v-if="showToast" :message="toastMessage" :type="toastAlertType"/>
+</div>
+
 </template>
 
 <script>
 import { ref, computed, watch } from 'vue';
-import TodoSimpleForm from '@/components/TodoSimpleForm.vue';
+// import TodoSimpleForm from '@/components/TodoSimpleForm.vue';
 import TodoList from '@/components/TodoList.vue';
 import axios from 'axios';
+import Toast from "@/components/Toast.vue";
+import { useToast } from "@/composables/toast";
+import {useRouter} from "vue-router";
 
 export default {
   components: {
-    TodoSimpleForm,
+    // TodoSimpleForm,
     TodoList,
+    Toast,
   },
   setup() {
+    const router = useRouter();
     const todos = ref([]);
     const error = ref('');
     const numberOfTodos = ref(0);
     let limit = 5;
     const currentPage = ref(1);
     const searchText = ref('');
+
+    const {  showToast,
+      toastMessage,
+      toastAlertType,
+      triggerToast } = useToast();
+    // const showToast = ref(false);
+    // const toastMessage = ref('');
+    // const toastAlertType = ref('');
+    // const toastTimeout = ref(null);
+    // const triggerToast = (message, type = 'success') => {
+    //   toastMessage.value = message;
+    //   toastAlertType.value = type;
+    //   showToast.value = true
+    //   toastTimeout.value = setTimeout(() => {
+    //     toastMessage.value = ''
+    //     toastAlertType.value = ''
+    //     showToast.value = false
+    //   }, 5000)
+    // }
+
     const numberOfPages = computed(() => {
       return Math.ceil(numberOfTodos.value/limit);
     });
@@ -75,7 +107,7 @@ export default {
         todos.value = res.data;
       } catch (err) {
         console.log(err);
-        error.value = 'Something went wrong.';
+        triggerToast('Something went wrong', 'danger')
       }
     };
 
@@ -93,7 +125,7 @@ export default {
         getTodos(1);
       } catch (err) {
         console.log(err);
-        error.value = 'Something went wrong.';
+        triggerToast('Something went wrong', 'danger')
       }
     };
 
@@ -106,7 +138,7 @@ export default {
         getTodos(1);
       } catch (err) {
         console.log(err);
-        error.value = 'Something went wrong.';
+        triggerToast('Something went wrong', 'danger')
       }
     };
 
@@ -122,7 +154,7 @@ export default {
         todos.value[index].completed = checked
       } catch (err) {
         console.log(err);
-        error.value = 'Something went wrong.';
+        triggerToast('Something went wrong', 'danger')
       }
 
     };
@@ -140,6 +172,11 @@ export default {
       }, 2000);
     });
 
+
+    const moveToCreatePage = () => {
+      router.push({name: 'TodoCreate'})
+    }
+
     return {
       searchTodo,
       todos,
@@ -151,6 +188,10 @@ export default {
       numberOfPages,
       currentPage,
       getTodos,
+      showToast,
+      toastMessage,
+      toastAlertType,
+      moveToCreatePage
     };
   }
 }
