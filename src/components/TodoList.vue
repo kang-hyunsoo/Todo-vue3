@@ -7,18 +7,18 @@
       <div class="card-body p-2 d-flex align-items-center" @click="moveToPage(todo.id)" style="cursor: pointer">
         <div class="form-check flex-grow-1">
           <input 
-            class="form-check-input" 
+            class="ml-2 mr-2"
             type="checkbox"
             :checked="todo.completed"
             @change="toggleTodo(index, $event)"
             @click.stop
           >
-          <label 
+          <span
             class="form-check-label"
             :class="{ todo: todo.completed }"
           >
             {{ todo.subject }}
-          </label>
+          </span>
         </div>
         <div>
           <button 

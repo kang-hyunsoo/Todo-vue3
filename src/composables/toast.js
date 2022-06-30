@@ -14,7 +14,7 @@ export const useToast = () => {
             toastMessage.value = ''
             toastAlertType.value = ''
             showToast.value = false
-        }, 5000)
+        }, 2000)
     }
     onUnmounted(() => {
         // unmount하기 전에 쓸데없는 메모리를 잡아먹는 것을 정리하는 역할
@@ -25,8 +25,6 @@ export const useToast = () => {
         showToast,
         toastMessage,
         toastAlertType,
-        triggerToast
-
-
+        triggerToast,
     }
 }

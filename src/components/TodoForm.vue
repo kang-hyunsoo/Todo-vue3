@@ -4,12 +4,12 @@
     <div class="row">
       <div class="col-6">
         <div class="form-group">
-          <label>Todo Subject</label>
+          <label class="pb-2">Subject</label>
           <input
               type="text"
               class="form-control"
               v-model="todo.subject">
-          <div v-if="subjectError" style="color: red;">
+          <div v-if="subjectError" class="text-red">
             {{subjectError}}
           </div>
         </div>
@@ -49,7 +49,9 @@
       Cancel
     </button>
   </form>
-  <Toast v-if="showToast" :message="toastMessage" :type="toastAlertType"/>
+  <transition name="fade">
+    <Toast v-if="showToast" :message="toastMessage" :type="toastAlertType"/>
+  </transition>
 </template>
 
 <script>
@@ -57,7 +59,7 @@ import { useRoute, useRouter } from "vue-router";
 import axios from 'axios';
 import { ref, computed } from 'vue';
 import _ from 'lodash';
-import Toast from "@//components/Toast";
+import Toast from "@/components/Toast";
 import { useToast } from "@/composables/toast";
 
 export default {
@@ -94,7 +96,6 @@ export default {
 
     const getTodo = async () => {
       loading.value = true;
-
       try {
         const res = await axios.get(`http://localhost:3000/todos/${todoId}`)
         todo.value = {...res.data};
@@ -103,7 +104,7 @@ export default {
       } catch (error) {
         loading.value = false;
         console.log(error)
-        triggerToast('Something went wrong', 'danger')
+        // triggerToast('Something went wrong', 'danger')
       }
     }
 
@@ -158,17 +159,18 @@ export default {
       }
     }
     getTodo()
+
     return {
       todo,
       loading,
-      toggleTodoStatus,
-      moveToTodoListPage,
-      onSave,
       todoUpdated,
       showToast,
       toastMessage,
       toastAlertType,
-      subjectError
+      subjectError,
+      toggleTodoStatus,
+      moveToTodoListPage,
+      onSave,
     }
   }
 
@@ -177,5 +179,31 @@ export default {
 
 
 <style scoped>
+/*각 태그에 data-xxxxxx라는 고유의 아이디가 적용됨*/
+  .text-red {
+    color: darkred;
+  }
 
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s ease;
+}
+
+.fade-enter-form,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+  transform: translateY(0px);
+
+}
 </style>
+
+<!--두 개의 style tag를 만들어서 하나만 global하게 동작도 가능-->
+<!--<style>-->
+
+<!--</style>-->

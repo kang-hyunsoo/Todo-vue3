@@ -1,9 +1,9 @@
 <template>
 <!--  <router-view/>-->
 <div>
-  <div  class="d-flex justify-content-between mb-3">
+  <div  class="d-flex justify-content-between align-items-end mb-3">
     <h2 class="pt-5">To-Do List</h2>
-    <button class="btn btn-primary" @click="moveToCreatePage">Create Todo</button>
+    <button class="btn btn-primary create-btn font-weight-bold" @click="moveToCreatePage">Create</button>
   </div>
     <input
         class="form-control"
@@ -13,7 +13,6 @@
         @keyup.enter="searchTodo"
     >
     <hr />
-<!--    <TodoSimpleForm @add-todo="addTodo" />-->
     <div style="color: red">{{ error }}</div>
 
     <div v-if="!todos.length">
@@ -78,20 +77,6 @@ export default {
       toastMessage,
       toastAlertType,
       triggerToast } = useToast();
-    // const showToast = ref(false);
-    // const toastMessage = ref('');
-    // const toastAlertType = ref('');
-    // const toastTimeout = ref(null);
-    // const triggerToast = (message, type = 'success') => {
-    //   toastMessage.value = message;
-    //   toastAlertType.value = type;
-    //   showToast.value = true
-    //   toastTimeout.value = setTimeout(() => {
-    //     toastMessage.value = ''
-    //     toastAlertType.value = ''
-    //     showToast.value = false
-    //   }, 5000)
-    // }
 
     const numberOfPages = computed(() => {
       return Math.ceil(numberOfTodos.value/limit);
@@ -156,7 +141,6 @@ export default {
         console.log(err);
         triggerToast('Something went wrong', 'danger')
       }
-
     };
 
     let timeout = null;
@@ -178,28 +162,25 @@ export default {
     }
 
     return {
-      searchTodo,
       todos,
-      addTodo,
-      deleteTodo,
-      toggleTodo,
       searchText,
       error,
       numberOfPages,
       currentPage,
-      getTodos,
       showToast,
       toastMessage,
       toastAlertType,
-      moveToCreatePage
+      searchTodo,
+      addTodo,
+      deleteTodo,
+      toggleTodo,
+      getTodos,
+      moveToCreatePage,
     };
   }
 }
 </script>
 
 <style>
-.todo {
-  color: gray;
-  text-decoration: line-through;
-}
+
 </style>
