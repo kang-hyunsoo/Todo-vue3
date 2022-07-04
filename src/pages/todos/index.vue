@@ -1,6 +1,5 @@
 <template>
-<!--  <router-view/>-->
-<div>
+<div style="opacity: 0.5;">
   <div  class="d-flex justify-content-between align-items-end mb-3">
     <h2 class="pt-5">To-Do List</h2>
     <button class="btn btn-primary create-btn font-weight-bold" @click="moveToCreatePage">Create</button>
