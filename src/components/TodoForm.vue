@@ -6,19 +6,9 @@
         <Input
             label="Subject"
             :error="subjectError"
-            :subject="todo.subject"
-            @update-subject="updateTodoSubject"
+            v-model:subject="todo.subject"
+<!--            v-model을 여러개 사용하고 싶으면 v-model:이름="" 으로 적으면 됨-->
         />
-<!--        <div class="form-group">-->
-<!--          <label class="pb-2">Subject</label>-->
-<!--          <input-->
-<!--              type="text"-->
-<!--              class="form-control"-->
-<!--              v-model="todo.subject">-->
-<!--          <div v-if="subjectError" class="text-red">-->
-<!--            {{subjectError}}-->
-<!--          </div>-->
-<!--        </div>-->
       </div>
       <div v-if="editing" class="col-6">
         <div class="form-group">
@@ -41,7 +31,6 @@
         </div>
       </div>
     </div>
-
     <button
         type="submit"
         class="btn btn-primary"
@@ -63,7 +52,7 @@
 <script>
 import { useRoute, useRouter } from "vue-router";
 import axios from 'axios';
-import { ref, computed } from 'vue';
+import { ref, computed, onUpdated } from 'vue';
 import _ from 'lodash';
 import Toast from "@/components/Toast";
 import { useToast } from "@/composables/toast";
@@ -90,6 +79,10 @@ export default {
       completed: false,
       body: ''
     });
+    onUpdated(() => {
+      console.log(todo.value.subject)
+    })
+
     const originalTodo = ref(null);
     const loading = ref(false);
     const todoId = route.params.id;
@@ -168,10 +161,6 @@ export default {
     }
     getTodo()
 
-    const updateTodoSubject = (newValue) => {
-      todo.value.subject = newValue
-
-    }
 
     return {
       todo,
@@ -184,7 +173,6 @@ export default {
       toggleTodoStatus,
       moveToTodoListPage,
       onSave,
-      updateTodoSubject,
     }
   }
 

@@ -32,7 +32,7 @@ export default {
   },
   setup(props, { emit }) {
     const onInput = (e) => {
-      console.log(e.target.value)
+      // 컴포넌트에 v-model 사용시 update:props-name
       emit('update:subject', e.target.value)
     }
   return {
