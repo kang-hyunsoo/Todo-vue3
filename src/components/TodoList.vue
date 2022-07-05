@@ -1,35 +1,35 @@
 <template>
-  <div 
-      v-for="(todo, index) in todos"
-      :key="todo.id"
-      class="card mt-2"
-    >
-      <div class="card-body p-2 d-flex align-items-center" @click="moveToPage(todo.id)" style="cursor: pointer">
+  <List
+      :items="todos"
+  >
+    <template #default="{item, index}">
+      <div class="card-body p-2 d-flex align-items-center" @click="moveToPage(item.id)" style="cursor: pointer">
         <div class="form-check flex-grow-1">
           <input 
             class="ml-2 mr-2"
             type="checkbox"
-            :checked="todo.completed"
+            :checked="item.completed"
             @change="toggleTodo(index, $event)"
             @click.stop
           >
           <span
             class="form-check-label"
-            :class="{ todo: todo.completed }"
+            :class="{ todo: item.completed }"
           >
-            {{ todo.subject }}
+            {{ item.subject }}
           </span>
         </div>
         <div>
           <button 
             class="btn btn-danger btn-sm"
-            @click.stop="openModal(todo.id)"
+            @click.stop="openModal(item.id)"
           >
             Delete
           </button>
         </div>
       </div>
-    </div>
+    </template>
+  </List>
   <teleport to="#modal">
     <DeleteModal v-if="showModal" @close="closeModal" @delete="deleteTodo"/>
   </teleport>
@@ -39,10 +39,12 @@
 import {useRouter} from "vue-router";
 import {ref} from  'vue'
 import DeleteModal from "./DeleteModal";
+import List from '@/components/List.vue'
 
 export default {
   components: {
     DeleteModal,
+    List,
   },
     props: {
         todos: {
