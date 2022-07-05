@@ -3,16 +3,22 @@
   <form v-else @submit.prevent="onSave">
     <div class="row">
       <div class="col-6">
-        <div class="form-group">
-          <label class="pb-2">Subject</label>
-          <input
-              type="text"
-              class="form-control"
-              v-model="todo.subject">
-          <div v-if="subjectError" class="text-red">
-            {{subjectError}}
-          </div>
-        </div>
+        <Input
+            label="Subject"
+            :error="subjectError"
+            :subject="todo.subject"
+            @update-subject="updateTodoSubject"
+        />
+<!--        <div class="form-group">-->
+<!--          <label class="pb-2">Subject</label>-->
+<!--          <input-->
+<!--              type="text"-->
+<!--              class="form-control"-->
+<!--              v-model="todo.subject">-->
+<!--          <div v-if="subjectError" class="text-red">-->
+<!--            {{subjectError}}-->
+<!--          </div>-->
+<!--        </div>-->
       </div>
       <div v-if="editing" class="col-6">
         <div class="form-group">
@@ -61,10 +67,12 @@ import { ref, computed } from 'vue';
 import _ from 'lodash';
 import Toast from "@/components/Toast";
 import { useToast } from "@/composables/toast";
+import Input from '@/components/Input'
 
 export default {
   components : {
-    Toast
+    Toast,
+    Input
   },
   props : {
     editing: {
@@ -160,6 +168,11 @@ export default {
     }
     getTodo()
 
+    const updateTodoSubject = (newValue) => {
+      todo.value.subject = newValue
+
+    }
+
     return {
       todo,
       loading,
@@ -171,6 +184,7 @@ export default {
       toggleTodoStatus,
       moveToTodoListPage,
       onSave,
+      updateTodoSubject,
     }
   }
 
