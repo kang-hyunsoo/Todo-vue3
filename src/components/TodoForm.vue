@@ -50,12 +50,13 @@
 
 <script>
 import { useRoute, useRouter } from "vue-router";
-import axios from 'axios';
 import { ref, computed } from 'vue';
-import _ from 'lodash';
-import Toast from "@/components/Toast";
+import { useStore } from 'vuex';
 import { useToast } from "@/composables/toast";
+import axios from 'axios';
+import Toast from "@/components/Toast";
 import Input from '@/components/Input'
+import _ from 'lodash';
 
 export default {
   components : {
@@ -71,6 +72,8 @@ export default {
   },
 
   setup(props) {
+    const store = useStore()
+    console.log(store.state.showToast)
     const router = useRouter()
     const route = useRoute()
     const todo = ref({
