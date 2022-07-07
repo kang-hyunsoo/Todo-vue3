@@ -7,7 +7,6 @@
             label="Subject"
             :error="subjectError"
             v-model:subject="todo.subject"
-<!--            v-model을 여러개 사용하고 싶으면 v-model:이름="" 으로 적으면 됨-->
         />
       </div>
       <div v-if="editing" class="col-6">
@@ -52,7 +51,7 @@
 <script>
 import { useRoute, useRouter } from "vue-router";
 import axios from 'axios';
-import { ref, computed, onUpdated } from 'vue';
+import { ref, computed } from 'vue';
 import _ from 'lodash';
 import Toast from "@/components/Toast";
 import { useToast } from "@/composables/toast";
@@ -79,9 +78,9 @@ export default {
       completed: false,
       body: ''
     });
-    onUpdated(() => {
-      console.log(todo.value.subject)
-    })
+    // onUpdated(() => {
+    //   console.log(todo.value.subject)
+    // })
 
     const originalTodo = ref(null);
     const loading = ref(false);
@@ -153,6 +152,10 @@ export default {
 
         const message = `Successfully ${props.editing ? 'Updated!' : 'Created!'}`
         triggerToast(message);
+
+        if(!props.editing) {
+          router.push({name: 'Todos'})
+        }
       }
       catch (error) {
         console.log(error)
